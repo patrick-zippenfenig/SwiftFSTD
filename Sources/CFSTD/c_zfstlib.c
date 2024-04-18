@@ -251,7 +251,9 @@ void c_fstunzip(
             break;
 
         case SAMPLE:
-            c_fstunzip_sample((unsigned short *)fld, zfld, ni, nj, zfstzip.step, zfstzip.nbits, (uint32_t *)&zfstzip);
+            Lib_Log(APP_LIBFST,APP_ERROR,"%f: PZ DISABLED \n");
+            exit(15);
+            //c_fstunzip_sample((unsigned short *)fld, zfld, ni, nj, zfstzip.step, zfstzip.nbits, (uint32_t *)&zfstzip);
             break;
 
         default:
@@ -327,9 +329,9 @@ void c_fstunzip_sample(unsigned short *fld, unsigned int *zfld, int ni, int nj, 
   start = 1;
   unpackTokensSample(zc2, idiffs2, zfld, nic2, njc2, nic1, njc1, nbits, step, header, start);
 
-  fill_coarse_nodes_(zc1, &nic1, &njc1, zc2, &nic2, &njc2, &lclstep);
-  ibicubic_int4_(zc1, &nic1, &njc1, &lclstep, &ajus_x2, &ajus_y2);
-  fill_coarse_nodes_(zc1, &nic1, &njc1, zc2, &nic2, &njc2, &lclstep);
+    // PZ DISABLE: fill_coarse_nodes_(zc1, &nic1, &njc1, zc2, &nic2, &njc2, &lclstep);
+  // PZ DISABLE: ibicubic_int4_(zc1, &nic1, &njc1, &lclstep, &ajus_x2, &ajus_y2);
+    // PZ DISABLE: fill_coarse_nodes_(zc1, &nic1, &njc1, zc2, &nic2, &njc2, &lclstep);
 
   for (j=1; j <= njc1; j++)
     {
@@ -347,9 +349,9 @@ void c_fstunzip_sample(unsigned short *fld, unsigned int *zfld, int ni, int nj, 
   start = 0;
   unpackTokensSample(zc1, idiffs1, zfld, nic1, njc1, nic, njc, nbits, step, header, start);
 
-  fill_coarse_nodes_(zc, &nic, &njc, zc1, &nic1, &njc1, &lclstep);
-  ibicubic_int4_(zc,&nic,&njc,&lclstep,&ajus_x1, &ajus_y1);
-  fill_coarse_nodes_(zc, &nic, &njc, zc1, &nic1, &njc1, &lclstep);
+    // PZ DISABLE: fill_coarse_nodes_(zc, &nic, &njc, zc1, &nic1, &njc1, &lclstep);
+    // PZ DISABLE: ibicubic_int4_(zc,&nic,&njc,&lclstep,&ajus_x1, &ajus_y1);
+    // PZ DISABLE: fill_coarse_nodes_(zc, &nic, &njc, zc1, &nic1, &njc1, &lclstep);
 
   for (j=1; j <= njc; j++)
     {
@@ -368,8 +370,8 @@ void c_fstunzip_sample(unsigned short *fld, unsigned int *zfld, int ni, int nj, 
   start = 0;
   unpackTokensSample(zc, idiffs, zfld, nic, njc, ni, nj, nbits, step, header, start);
 
-  fill_coarse_nodes_(predfld, &ni, &nj, zc, &nic, &njc, &lclstep);
-  ibicubic_int4_(predfld,&ni,&nj,&lclstep,&ajus_x, &ajus_y);
+    // PZ DISABLE: fill_coarse_nodes_(predfld, &ni, &nj, zc, &nic, &njc, &lclstep);
+    // PZ DISABLE: ibicubic_int4_(predfld,&ni,&nj,&lclstep,&ajus_x, &ajus_y);
 
   for (j=1; j <= nj; j++)
     {
@@ -382,7 +384,7 @@ void c_fstunzip_sample(unsigned short *fld, unsigned int *zfld, int ni, int nj, 
     }
 
 
-  fill_coarse_nodes_(predfld, &ni, &nj, zc, &nic, &njc, &lclstep);
+    // PZ DISABLE: fill_coarse_nodes_(predfld, &ni, &nj, zc, &nic, &njc, &lclstep);
 
   for (j=1; j <= nj; j++)
     {

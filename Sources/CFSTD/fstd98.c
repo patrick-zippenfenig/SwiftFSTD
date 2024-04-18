@@ -274,7 +274,8 @@ static void crack_std_parms(
     int32_t ftn_date = (int32_t) datexx;
     if ((stdf_entry->deet * stdf_entry->npas) != 0) {
         /* compute origin date */
-        incdatr_(&ftn_date, &ftn_date, &r8_diff);
+        // PZ REPLACED: incdatr_(&ftn_date, &ftn_date, &r8_diff);
+        ftn_date += r8_diff * 3600;
         cracked_parms->date_stamp = (int) ftn_date;
     }
 
@@ -461,7 +462,7 @@ static void print_std_parms(
     }
 
     if (strstr(option, "DATEO")) {
-        newdate_(&cracked.date_stamp, &dat2, &dat3, &minus3);
+        // PZ DISABLE: newdate_(&cracked.date_stamp, &dat2, &dat3, &minus3);
         snprintf(v_dateo, sizeof(v_dateo), "%08d %06d", dat2, dat3/100);
     } else {
         v_dateo[0] = '\0';
@@ -474,7 +475,7 @@ static void print_std_parms(
     }
 
     if (strstr(option, "DATEV")) {
-        newdate_(&cracked.date_valid, &dat2, &dat3, &minus3);
+        // PZ DISABLE: newdate_(&cracked.date_valid, &dat2, &dat3, &minus3);
         if (cracked.date_valid < -1) {
             snprintf(v_datev, sizeof(v_datev), "%08d %06d %10d", dat2, dat3/100, cracked.date_valid);
         } else {
@@ -500,7 +501,7 @@ static void print_std_parms(
                 int mode = -1;
                 int flag = 1;
                 float level;
-                convip_plus_(&iip1, &level, &kind, &mode, c_level, &flag, (F2Cl) 15);
+                // PZ DISBALE: convip_plus_(&iip1, &level, &kind, &mode, c_level, &flag, (F2Cl) 15);
                 c_level[15] = '\0';
                 /* blank initialisation */
                 snprintf(v_level, sizeof(v_level), "%s", "               ");
@@ -523,14 +524,15 @@ static void print_std_parms(
                 /* full IP1/IP2/IP3 triplet decoding */
                 float p1, p2, p3;
                 int kind1, kind2, kind3;
-                int StatusIP = ConvertIPtoPK(&p1, &kind1, &p2, &kind2, &p3, &kind3, stdf_entry->ip1, stdf_entry->ip2, stdf_entry->ip3);
-                if (kind1 < 0 || kind2 < 0 || kind3 < 0 || (StatusIP & CONVERT_ERROR) ) {
+                // PZ DISBALE: int StatusIP = ConvertIPtoPK(&p1, &kind1, &p2, &kind2, &p3, &kind3, stdf_entry->ip1, stdf_entry->ip2, stdf_entry->ip3);
+                // PZ DISBALE: if (kind1 < 0 || kind2 < 0 || kind3 < 0 || (StatusIP & CONVERT_ERROR) ) {
                     /* decode error somewhere */
-                    kind1 = 15; kind2 = 15; kind3 = 15;  /* integer code P = IP */
-                    p1 = stdf_entry->ip1; p2 = stdf_entry->ip2; p3 = stdf_entry->ip3;
-                }
-                kind1 &= 0x1F; kind2 &= 0x1F; kind3 &= 0x1F;   /* force modulo 32 */
-                snprintf(v_decoded, sizeof(v_decoded), "%10g%s %10g%s %10g%s", p1, kinds(kind1), p2, kinds(kind2), p3, kinds(kind3));
+                // PZ DISBALE:  kind1 = 15; kind2 = 15; kind3 = 15;  /* integer code P = IP */
+                // PZ DISBALE: p1 = stdf_entry->ip1; p2 = stdf_entry->ip2; p3 = stdf_entry->ip3;
+                // PZ DISBALE: }
+                // PZ DISBALE: kind1 &= 0x1F; kind2 &= 0x1F; kind3 &= 0x1F;   /* force modulo 32 */
+                // PZ DISBALE: snprintf(v_decoded, sizeof(v_decoded), "%10g%s %10g%s %10g%s", p1, kinds(kind1), p2, kinds(kind2), p3, kinds(kind3));
+                exit(100);
             }
         } /* special variable, no decoding */
     }
@@ -919,7 +921,8 @@ int c_fstecr(
         long long deltat = (long long) deet * npas;
         double nhours = (double) deltat;
         nhours = nhours / 3600.;
-        incdatr_(&f_datev, &f_datev, &nhours);
+        // PZ REPLACED:  incdatr_(&f_datev, &f_datev, &nhours);
+        f_datev += nhours * 3600;
         datev = (unsigned int) f_datev;
     }
 
@@ -2848,7 +2851,8 @@ int c_fstouv(
             ier = c_xdfopn(iun, read_only?"READ":"R-W", (word_2 *) &stdfkeys, 16, (word_2 *) &stdf_info_keys, 2, appl);
         }
     } else {
-        if (((iwko = c_wkoffit(FGFDT[i].file_name, strlen(FGFDT[i].file_name))) == -2) && (! FGFDT[i].attr.old)) {
+        // PZ DISBALE: if (((iwko = c_wkoffit(FGFDT[i].file_name, strlen(FGFDT[i].file_name))) == -2) && (! FGFDT[i].attr.old)) {
+        if (0) {
             ier = c_xdfopn(iun, "CREATE", (word_2 *) &stdfkeys, 16, (word_2 *) &stdf_info_keys, 2, appl);
         } else {
             ier = c_xdfopn(iun, read_only?"READ":"R-W", (word_2 *) &stdfkeys, 16, (word_2 *) &stdf_info_keys, 2, appl);
@@ -3298,7 +3302,8 @@ int c_fstvoi(
                     long long i_nhours = (deetnpas - ((deetnpas+1800)/3600)*3600);
                     double nhours = i_nhours;
                     nhours = (nhours / 3600.0);
-                    incdatr_(&f_datev, &f_datev, &nhours);
+                    // PZ REPLACED: incdatr_(&f_datev, &f_datev, &nhours);
+                    f_datev += nhours * 3600;
                     datexx = (unsigned int) f_datev;
                     /* re-octalise the date_stamp */
                     stdf_entry->date_stamp = 8 * (datexx/10) + (datexx % 10);
@@ -3449,7 +3454,7 @@ int c_ip1_all(
     float llevel = level;
 
     int ip_new = 0;
-    ConvertIp(&ip_new, &llevel, &lkind, 2);
+    // PZ DISBALE: ConvertIp(&ip_new, &llevel, &lkind, 2);
     ips_tab[0][ip_nb[0]] = ip_new;
     ip_nb[0]++;
     if (ip_nb[0] >= Max_Ipvals) {
@@ -3459,7 +3464,7 @@ int c_ip1_all(
 
     int ip_old = 0;
     if (lkind < 4) {
-        ConvertIp(&ip_old, &llevel, &lkind, 3);
+        // PZ DISBALE:  ConvertIp(&ip_old, &llevel, &lkind, 3);
     } else {
         /* no valid value for oldtype */
         ip_old = -9999;
@@ -3493,7 +3498,7 @@ int c_ip2_all(
     float llevel = level;
 
     int ip_new = 0;
-    ConvertIp(&ip_new, &llevel, &lkind, 2);
+    // PZ DISBALE: ConvertIp(&ip_new, &llevel, &lkind, 2);
     ips_tab[1][ip_nb[1]] = ip_new;
     ip_nb[1]++;
     if (ip_nb[1] >= Max_Ipvals) {
@@ -3503,7 +3508,7 @@ int c_ip2_all(
 
     int ip_old = 0;
     if (lkind < 4) {
-        ConvertIp(&ip_old, &llevel, &lkind, 3);
+        // PZ DISBALE:  ConvertIp(&ip_old, &llevel, &lkind, 3);
     } else {
         /* no valid value for oldtype */
         ip_old = -9999;
@@ -3536,7 +3541,7 @@ int c_ip3_all(
     float llevel = level;
 
     int ip_new = 0;
-    ConvertIp(&ip_new, &llevel, &lkind, 2);
+    // PZ DISBALE:  ConvertIp(&ip_new, &llevel, &lkind, 2);
     ips_tab[2][ip_nb[2]] = ip_new;
     ip_nb[2]++;
     if (ip_nb[2] >= Max_Ipvals) {
@@ -3546,7 +3551,7 @@ int c_ip3_all(
 
     int ip_old = 0;
     if (lkind < 4) {
-        ConvertIp(&ip_old, &llevel, &lkind, 3);
+        // PZ DISBALE:  ConvertIp(&ip_old, &llevel, &lkind, 3);
     } else {
         /* no valid value for oldtype */
         ip_old = -9999;
@@ -3579,7 +3584,7 @@ int c_ip1_val(
     float llevel = level;
 
     int ip_new = 0;
-    ConvertIp(&ip_new, &llevel, &lkind, 2);
+    // PZ DISBALE: ConvertIp(&ip_new, &llevel, &lkind, 2);
     ips_tab[0][ip_nb[0]] = ip_new;
     ip_nb[0]++;
     if (ip_nb[0] >= Max_Ipvals) {
@@ -3607,7 +3612,7 @@ int c_ip2_val(
     float llevel = level;
 
     int ip_new = 0;
-    ConvertIp(&ip_new, &llevel, &lkind, 2);
+    // PZ DISBALE: ConvertIp(&ip_new, &llevel, &lkind, 2);
     ips_tab[1][ip_nb[1]] = ip_new;
     ip_nb[1]++;
     if (ip_nb[1] >= Max_Ipvals) {
@@ -3635,7 +3640,7 @@ int c_ip3_val(
     float llevel = level;
 
     int ip_new = 0;
-    ConvertIp(&ip_new, &llevel, &lkind, 2);
+    // PZ DISBALE: ConvertIp(&ip_new, &llevel, &lkind, 2);
     ips_tab[2][ip_nb[2]] = ip_new;
     ip_nb[2]++;
     if (ip_nb[2] >= Max_Ipvals) {
@@ -5257,16 +5262,17 @@ void c_ip_string(
 ) {
     float lip1, lip2, lip3;
     int kind1, kind2, kind3;
-    int StatusIP = ConvertIPtoPK(&lip1, &kind1, &lip2, &kind2, &lip3, &kind3, ip1, ip2, ip3);
-    if (kind1 < 0 || kind2 < 0 || kind3 < 0 || (StatusIP & CONVERT_ERROR) ) {
+    // PZ DISBALE: int StatusIP = ConvertIPtoPK(&lip1, &kind1, &lip2, &kind2, &lip3, &kind3, ip1, ip2, ip3);
+    // PZ DISBALE: if (kind1 < 0 || kind2 < 0 || kind3 < 0 || (StatusIP & CONVERT_ERROR) ) {
         // decode error somewhere
         /* integer code P = IP */
-        kind1 = 15; kind2 = 15; kind3 = 15;
-        lip1 = ip1; lip2 = ip2; lip3 = ip3;
-    }
+    // PZ DISBALE:    kind1 = 15; kind2 = 15; kind3 = 15;
+    // PZ DISBALE:     lip1 = ip1; lip2 = ip2; lip3 = ip3;
+    // PZ DISBALE: }
     /* force modulo 32 */
-    kind1 &= 0x1F; kind2 &= 0x1F; kind3 &= 0x1F;
-    snprintf(buffer, size, "IP1 %g (%s), IP2 %g (%s), IP3 %g (%s)", lip1, kinds(kind1), lip2, kinds(kind2), lip3, kinds(kind3));
+    // PZ DISBALE: kind1 &= 0x1F; kind2 &= 0x1F; kind3 &= 0x1F;
+    // PZ DISBALE: snprintf(buffer, size, "IP1 %g (%s), IP2 %g (%s), IP3 %g (%s)", lip1, kinds(kind1), lip2, kinds(kind2), lip3, kinds(kind3));
+    exit(99);
 }
 
 

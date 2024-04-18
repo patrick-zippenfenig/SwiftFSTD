@@ -558,7 +558,7 @@ int c_fnom(
 
     // FORTRAN files must be opened by a FORTRAN module
     int ier = 0;
-    if (FGFDT[entry].attr.ftn) {
+    if (0 && FGFDT[entry].attr.ftn) {
         int32_t iun77 = liun;
         int32_t lrec77 = lrec;
         int32_t rndflag77 = FGFDT[entry].attr.rnd;
@@ -575,7 +575,7 @@ int c_fnom(
             FGFDT[entry].eff_file_size = dimm / sizeof(uint32_t);
             close(ier);
         }
-        ier = qqqf7op_(&iun77, FGFDT[entry].file_name, &lrec77, &rndflag77, &unfflag77, &lmult, (F2Cl) lng);
+        // PZ DISBALE: ier = qqqf7op_(&iun77, FGFDT[entry].file_name, &lrec77, &rndflag77, &unfflag77, &lmult, (F2Cl) lng);
     } else if (FGFDT[entry].attr.stream || FGFDT[entry].attr.std || FGFDT[entry].attr.burp || FGFDT[entry].attr.wa ||
                (FGFDT[entry].attr.rnd && !FGFDT[entry].attr.ftn) ) {
         ier = c_waopen2(liun);
@@ -647,9 +647,9 @@ int c_fclos(
 
     int ier = 0;
     if (FGFDT[entry].open_flag) {
-        if (FGFDT[entry].attr.ftn) {
+        if (0 && FGFDT[entry].attr.ftn) {
             int32_t iun77 = iun;
-            ier = ftnclos_(&iun77);
+            // PZ DISABLE: ier = ftnclos_(&iun77);
         } else {
             ier = close(FGFDT[entry].fd);
         }
