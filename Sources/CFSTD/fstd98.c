@@ -48,10 +48,12 @@
 //#include "excdes_new.h"
 //#include "fst_missing.h"
 
-//#include "qstdir.h"
+#include "qstdir.h"
+#include "rmn.h"
 //#include <rmn/convert_ip.h>
 //#include "convert_ip.h"
-#include "xdf98.h"
+//#include "xdf98.h"
+#include "xdf98Light.h"
 
 //#include "float_packer.h"
 #include "c_zfstlib.h"

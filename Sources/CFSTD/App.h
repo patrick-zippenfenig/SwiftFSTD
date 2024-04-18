@@ -11,6 +11,7 @@
 
 
 #define APP_EXTRA 0
+#define APP_TRIVIAL 0
 #define APP_LIBFST 0
 #define APP_LIBFST 0
 #define APP_LIBRMN 0
@@ -20,6 +21,7 @@
 #define APP_INFO 2
 #define APP_FATAL 3
 #define APP_VERBATIM 5
+#define APP_ALWAYS 8
 void Lib_Log(int Lib, int Level, const char *Format, ...);
 int Lib_LogLevel(int Lib, int somtehing);
 

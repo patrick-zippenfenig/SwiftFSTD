@@ -941,31 +941,33 @@ key_descriptor stdf_info_keys[] = {
 #endif
 };
 #else
+// PZ: REMOVED extern
+
 //! File table , exported symbol
-extern file_table_entry_ptr file_table[MAX_XDF_FILES];
+ file_table_entry_ptr file_table[MAX_XDF_FILES];
 
 //! !stride
-extern int xdf_stride;
+ int xdf_stride;
 //! Double float indicator
-extern int xdf_double;
+ int xdf_double;
 //! Short integer indicator
-extern int xdf_short;
+ int xdf_short;
 //! Byte, char array indicator
-extern int xdf_byte;
+ int xdf_byte;
 //! Data type of last record read
-extern int xdf_datatyp;
+ int xdf_datatyp;
 //! Enforce 8 char for date specifications
-extern int xdf_enforc8;
+ int xdf_enforc8;
 //! Number of bits per FORTRAN word
-extern int FTN_Bitmot;
+ int FTN_Bitmot;
 //! No pack/unpack, used by editfst
-extern int image_mode_copy;
+ int image_mode_copy;
 //! Chekcpoint mode, no closing of the file
-extern int xdf_checkpoint;
+ int xdf_checkpoint;
 //! If one std seq file is opened, the limit of opened files becomes 128
-extern int STDSEQ_opened;
-extern key_descriptor stdfkeys[];
-extern key_descriptor stdf_info_keys[];
+ int STDSEQ_opened;
+ key_descriptor stdfkeys[];
+ key_descriptor stdf_info_keys[];
 #endif
 
 #endif
