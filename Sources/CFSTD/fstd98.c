@@ -45,7 +45,7 @@
 
 #include "fstd98.h"
 #include "c_wkoffit.h"
-#include "excdes_new.h"
+//#include "excdes_new.h"
 #include "fst_missing.h"
 
 #include "qstdir.h"
@@ -53,7 +53,7 @@
 #include "convert_ip.h"
 #include "xdf98.h"
 
-#include "float_packer.h"
+//#include "float_packer.h"
 #include "c_zfstlib.h"
 #include "compact_integer.h"
 #include "armn_compress_32.h"
@@ -2811,7 +2811,7 @@ int c_fstouv(
         // printf("DEBUG++ fstouv appel a c_env_var_cracker\n");
         // Obtain options from environment variable
         // PZ DISABLED: c_env_var_cracker("FST_OPTIONS", c_fst_env_var, "C");
-        C_requetes_init(requetes_filename, debug_filename);
+        // PZ DISABLED:C_requetes_init(requetes_filename, debug_filename);
         ier = init_ip_vals();
     }
     i = fnom_index(iun);
