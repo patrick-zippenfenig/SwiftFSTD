@@ -53,4 +53,9 @@ void *compact_double(
     const void * const missingTag
 );
 
+#define powerSpan 65
+static double powerOf2s[powerSpan];
+static int powerOf2sInitialized = 0;
+#define MAX_RANGE 1.0e+38
+
 #endif
