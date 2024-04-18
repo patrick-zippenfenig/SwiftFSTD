@@ -8,5 +8,7 @@
 #ifndef Header_h
 #define Header_h
 
+#include "../fstd98.h"
+#include "../fnom.h"
 
 #endif /* Header_h */
