@@ -18,7 +18,7 @@ final class SwiftFSTDTests: XCTestCase {
            // corresponding amount of memory
            //c_fstopl("REDUCTION32", 1, 0);
 
-        let filePath = "/Users/patrick/Downloads/2022090100_000"
+        let filePath = "/Users/patrick/Downloads/2023060100_002"
         
         // Link file to a unit number (Fortran compatible I/O handle)
     var unitNb: Int32 = 0;
@@ -66,13 +66,13 @@ final class SwiftFSTDTests: XCTestCase {
         var ip3: UInt32 = 0
         
             // Variable type
-        var typvar = [CChar](repeating: 0, count: 3)
+        var typvar = [CChar](repeating: 32, count: 3) + [0]
             // Variable name
-        var nomvar = [CChar](repeating: 0, count: 5)
+        var nomvar = [CChar](repeating: 32, count: 5) + [0]
             // Label
-        var etiket = [CChar](repeating: 0, count: 13)
+        var etiket = [CChar](repeating: 32, count: 13) + [0]
             // Grid type (geographical projection)
-        var grtyp = [CChar](repeating: 0, count: 2)
+        var grtyp = [CChar](repeating: 32, count: 2) + [0]
             // First grid descriptor
         var ig1: UInt32 = 0
             // Second grid descriptor
@@ -105,10 +105,10 @@ final class SwiftFSTDTests: XCTestCase {
 
                 c_fstprm (key, &dateo, &deet, &npas, &ni, &nj, &nk, &nbits, &datyp, &ip1, &ip2, &ip3, &typvar, &nomvar, &etiket, &grtyp, &ig1, &ig2, &ig3, &ig4, &swa, &lng, &dltf, &ubc, &extra1, &extra2, &extra3);
 
-                print("%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t%d\t%d\t%d\t%d\n", nomvar, typvar, grtyp, ni, nj, nk, ip1, ip2, ip3, etiket, ig1, ig2, ig3, ig4);
+            print("%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t%d\t%d\t%d\t%d\n", String(cString: nomvar), String(cString:typvar), String(cString:grtyp), ni, nj, nk, ip1, ip2, ip3, String(cString:etiket), ig1, ig2, ig3, ig4);
 
                 // Allocate memory to hold the field's data
-            var field = [UInt32](repeating: 0, count: Int(ni * nj * nk))
+            var field = [Float](repeating: .nan, count: Int(ni * nj * nk))
 
                 resultCode = c_fstluk(&field, key, &ni, &nj, &nk);
                 if (resultCode < 0) {
